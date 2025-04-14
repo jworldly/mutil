@@ -1,0 +1,12 @@
+<resources>
+    <string name="label_login_1">登录以获得完整访问权限</string>
+    <string name="label_login_2">账户可随时删除</string>
+    <string name="label_login_google">使用 Google 登录</string>
+    <string name="label_login_facebook">使用 Facebook 登录</string>
+    <string name="label_login_x">使用 X 登录</string>
+    <string name="label_login_phone">使用 手机号码 登录</string>
+    <string name="label_login_mail">使用 电子邮箱 登录</string>
+    <string name="label_login_privacy_0">服务条款</string>
+    <string name="label_login_privacy">|</string>
+    <string name="label_login_privacy_1">隐私政策</string>
+</resources>
