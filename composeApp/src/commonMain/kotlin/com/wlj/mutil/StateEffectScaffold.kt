@@ -8,12 +8,13 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.wlj.shared.getPlatform
+import com.wlj.shared.tools
 import com.wlj.shared.viewmodel.BaseVM
 import com.wlj.shared.viewmodel.CommonEffect
 import com.wlj.shared.viewmodel.Effect
 import com.wlj.shared.viewmodel.State
 import kotlinx.coroutines.withContext
+import org.koin.mp.KoinPlatform
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -32,7 +33,7 @@ fun <S : State, E : Effect, VM : BaseVM<*, S, E>> StateEffectScaffold(
         viewModel.commonEffect.collect { effect ->
             when (effect) {
                 is CommonEffect.Toast -> {
-                    getPlatform().toast(effect.message)
+                    tools.toast(effect.message)
                 }
             }
         }

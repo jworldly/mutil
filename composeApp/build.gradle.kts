@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 kotlin {
@@ -66,6 +67,7 @@ kotlin {
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -105,6 +107,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     dependencies {
         debugImplementation(compose.uiTooling)

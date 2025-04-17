@@ -1,5 +1,6 @@
 package com.wlj.shared
 
+import io.ktor.client.engine.HttpClientEngineConfig
 import kotlinx.cinterop.ObjCMethod
 import platform.Foundation.NSLog
 import platform.Foundation.NSString
@@ -26,6 +27,9 @@ class IOSPlatform : Platform {
     override fun toast(str: String) {
         log(str)
         showToast(str)
+    }
+
+    override fun configEngine(config: HttpClientEngineConfig) {
     }
 }
 

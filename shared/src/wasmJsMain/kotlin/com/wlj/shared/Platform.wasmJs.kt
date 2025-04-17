@@ -1,5 +1,7 @@
 package com.wlj.shared
 
+import io.ktor.client.engine.HttpClientEngineConfig
+
 //这个注解用于指定 Kotlin 代码中 crypto 变量对应 JavaScript 中的 crypto 对象。
 @JsName("crypto")
 external val crypto: Crypto
@@ -33,6 +35,10 @@ class WasmPlatform: Platform {
 
     override fun toast(str: String) {
         alert(str)
+    }
+
+    override fun configEngine(config: HttpClientEngineConfig) {
+
     }
 
 }

@@ -1,4 +1,4 @@
-package com.wlj.mutil.login
+package com.wlj.mutil.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

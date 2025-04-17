@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wlj.shared.getPlatform
+import com.wlj.shared.net.loading.LoadingManager
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * 用户与ui的交互事件
@@ -66,6 +68,8 @@ sealed class CommonEffect : Effect {
  * uiState聚合页面的全部UI状态的LiveData
  */
 abstract class BaseVM<A : Action, S : State, E : Effect> : ViewModel(), KoinComponent {
+
+     val loading: LoadingManager by inject()
 
 // <editor-fold desc="action">
     private val _action = Channel<A>()

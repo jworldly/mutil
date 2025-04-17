@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 kotlin {
@@ -55,14 +56,20 @@ kotlin {
 
         commonMain {
             dependencies {
+                implementation(compose.material)
                 implementation(compose.components.resources)
                 //koin
                 api(project.dependencies.platform(libs.koin.bom))
                 api(libs.koin.core)
                 api(libs.koin.compose)
                 api(libs.koin.compose.viewmodel)
-//            implementation(libs.koin.compose.viewmodel.navigation)
+//              implementation(libs.koin.compose.viewmodel.navigation)
 
+                api(libs.ktor.client.core)
+                api(libs.ktor.serialization.json)
+                api(libs.ktor.client.content.negotiation)
+                api(libs.ktor.client.logging)
+                api(libs.atomicfu)
             }
         }
 
@@ -70,13 +77,20 @@ kotlin {
             dependencies {
                 api(project.dependencies.platform(libs.koin.bom))
                 api(libs.koin.android)
+
+                api(libs.ktor.client.okhttp)
             }
         }
 
         iosMain {
-//            dependsOn(koinCommon)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
 
+        jvmMain.dependencies {
+            api(libs.ktor.client.okhttp)
+        }
     }
 }
 
@@ -89,5 +103,8 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+    dependencies {
+        debugImplementation(libs.loginterceptor)
     }
 }

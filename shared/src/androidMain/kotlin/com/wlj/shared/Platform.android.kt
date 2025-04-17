@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import io.ktor.client.engine.HttpClientEngineConfig
+import io.ktor.client.engine.okhttp.OkHttpConfig
+import io.nerdythings.okhttp.profiler.OkHttpProfilerInterceptor
 import java.util.UUID
-import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent.inject
 
 class AndroidPlatform : Platform {
@@ -18,11 +20,17 @@ class AndroidPlatform : Platform {
         get() = UUID.randomUUID().toString()
 
     override fun log(str: String) {
-        Log.d("TAG", str)
+        Log.d(Config.TAG, str)
     }
 
     override fun toast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun configEngine(config: HttpClientEngineConfig) {
+        if (!Config.debug) return
+        if (config !is OkHttpConfig) return
+        config.addInterceptor(OkHttpProfilerInterceptor())
     }
 
 }

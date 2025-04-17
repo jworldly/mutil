@@ -1,14 +1,14 @@
 package com.wlj.mutil
 
 import android.app.Application
-import android.content.Context
+import com.wlj.mutil.di.AppModule
+import com.wlj.mutil.net.headers
+import com.wlj.shared.Config
 import com.wlj.shared.di.initKoin
-import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
 import org.koin.core.module.Module
-import org.koin.dsl.module
 
 /**
  * @Author: wlj
@@ -18,6 +18,11 @@ import org.koin.dsl.module
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        Config.apply {
+            debug = BuildConfig.DEBUG
+            headersBuilder.headers()
+        }
         //初始化
         initKoin(getAppModule())
             .androidContext(this)
@@ -25,7 +30,6 @@ class MyApplication : Application() {
     }
 
     private fun getAppModule(): Module {
-        return module {
-        }
+        return AppModule
     }
 }

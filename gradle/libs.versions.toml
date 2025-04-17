@@ -16,11 +16,12 @@ compose-multiplatform = "1.7.3"
 junit = "4.13.2"
 kotlin = "2.1.10"
 kotlinx-coroutines = "1.10.1"
-ktor = "2.3.11"
+ktor = "3.1.2"
 koin-bom = "4.0.3"
 logback = "1.5.6"
 uiAndroid = "1.7.8"
 junitJupiter = "5.8.1"
+napier = "2.7.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -33,7 +34,20 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
-logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+loginterceptor = { module = "io.nerdythings:okhttp-profiler", version = "1.1.1" }#日志
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }#日志
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }#日志
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }#使用 OkHttp 作为引擎（通常用于 Android 项目）
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }#轻量的多平台异步 I/O 引擎
+#napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+#slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j-version" }  #找不到版本号
+ktor-serialization-json= { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }  #To serialize/deserialize JSON data
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }  #To serialize/deserialize JSON data
+#ktor-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.8.1" }  #To serialize/deserialize JSON data
+
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
@@ -52,6 +66,7 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.27.0" }
 
 
 [plugins]
@@ -60,5 +75,5 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
