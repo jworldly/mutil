@@ -24,7 +24,7 @@ interface NetErrorHandler {
             is NullPointerException -> e.message
             is ResponseException -> e.message
             is NetException -> e.message
-            else -> "?"
+            else -> e.message
         }
 
         tools.toast(message.toString())

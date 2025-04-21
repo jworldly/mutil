@@ -24,4 +24,3 @@ fun String.toPainterResource(): Painter {
     }
     return painterResource(drawableResource)
 }
-

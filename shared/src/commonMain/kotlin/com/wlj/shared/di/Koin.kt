@@ -29,15 +29,16 @@ import org.koin.dsl.module
 /**
  * 初始化koin
  */
-fun initKoin(appModule: Module): KoinApplication {
+fun initKoin(appModule: Array<Module>): KoinApplication {
 
     return startKoin {
         modules(
-            listOf(
+            arrayListOf(
                 sharedModule,
                 netModule,
-                appModule,
-            )
+            ).apply {
+                addAll(appModule)
+            }
         )
     }
 }
@@ -60,7 +61,7 @@ val netModule = module {
                 json(Json { ignoreUnknownKeys = true  /*忽略未知字段*/ })
             }
             //超时
-            install(HttpTimeout){
+            install(HttpTimeout) {
                 requestTimeoutMillis = 5_000
                 connectTimeoutMillis = 5_000
                 socketTimeoutMillis = 5_000

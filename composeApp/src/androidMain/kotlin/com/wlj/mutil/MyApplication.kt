@@ -19,17 +19,11 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Config.apply {
-            debug = BuildConfig.DEBUG
-            headersBuilder.headers()
-        }
         //初始化
-        initKoin(getAppModule())
+        initKoin(AppModule)
             .androidContext(this)
             .androidLogger(Level.INFO)
     }
 
-    private fun getAppModule(): Module {
-        return AppModule
-    }
+
 }

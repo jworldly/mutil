@@ -22,11 +22,11 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun <S : State, E : Effect, VM : BaseVM<*, S, E>> StateEffectScaffold(
     viewModel: VM,
     initialState: S? = null,
-    lifecycle: Lifecycle = LocalLifecycleOwner.current.lifecycle,
+    lifecycle: Lifecycle = androidx.lifecycle.compose.LocalLifecycleOwner.current.lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = EmptyCoroutineContext,
     sideEffect: (suspend (VM, E) -> Unit)? = null,
-    content: @Composable (VM, S) -> Unit
+    content: (@Composable (VM, S) -> Unit)
 ) {
     // 通用效果处理
     LaunchedEffect(viewModel) {

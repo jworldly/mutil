@@ -12,21 +12,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wlj.mutil.StateEffectScaffold
 import com.wlj.mutil.toPainterResource
+import com.wlj.mutil.ui.MainNavigationActions
 import com.wlj.shared.ListItem
 import com.wlj.shared.tools
+import de.drick.compose.hotpreview.HotPreview
 import mutil.composeapp.generated.resources.Res
 import mutil.composeapp.generated.resources.ic_login_google
 import mutil.composeapp.generated.resources.ic_login_top
@@ -40,7 +43,6 @@ import mutil.composeapp.generated.resources.label_login_privacy_0
 import mutil.composeapp.generated.resources.label_login_privacy_1
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -51,29 +53,29 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
+    navigationActions: MainNavigationActions,
     pop: () -> Unit,
 ) {
-    val vm = koinViewModel<LoginVM>()
+    val vm: LoginVM = koinViewModel()
 
-    StateEffectScaffold(
-        viewModel = vm,
-    ) { viewModel, state ->
+    StateEffectScaffold(vm) { viewModel, state ->
 
     }
 
-
+    val ss = stringResource(Res.string.label_login_google)
     Content(
         modifier, pop, listOf(
             ListItem(
                 Res.drawable.ic_login_google, Res.string.label_login_google
             ) {
-                tools.toast("loginGoogle")
+//                tools.toast(ss)
+                navigationActions.toMain()
             },
 
             ListItem(
                 Res.drawable.ic_login_google, Res.string.label_login_mail
             ) {
-                tools.log("Res.string.label_login_mail")
+                tools.log("Res.string.label_login_mail 事实上 ，$ss")
 //                viewModel.loginGoogle { pop() }
                 vm.sendAction(LoginAction.getVerifyCode)
             },
@@ -117,15 +119,16 @@ fun Content(
                 text = stringResource(Res.string.label_login_1),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(top = 10.dp, bottom = 8.dp)
             )
 
             Text(
                 text = stringResource(Res.string.label_login_2),
                 fontSize = 11.sp,
+                fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colorScheme.onSurface,
             )
 
             LoginList(
@@ -141,20 +144,20 @@ fun Content(
                 Text(
                     text = stringResource(Res.string.label_login_privacy_0),
                     fontSize = 11.sp,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = stringResource(Res.string.label_login_privacy),
                     fontSize = 13.sp,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(start = 5.dp, end = 5.dp),
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = stringResource(Res.string.label_login_privacy_1),
                     fontSize = 11.sp,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -173,7 +176,7 @@ fun Content(
     }
 }
 
-@Preview
+@HotPreview(widthDp = 411, heightDp = 891, density = 2.625f)
 @Composable
 fun Test() {
 
@@ -182,7 +185,16 @@ fun Test() {
         listOf(
             ListItem(
                 Res.drawable.ic_login_google, Res.string.label_login_mail
-            ) {}
+            ) {
+                tools.toast("Res.string.label_login_mail 事实上 ")
+            },
+
+            ListItem(
+                Res.drawable.ic_login_google, Res.string.label_login_facebook
+            ) {
+
+            }
+
         )
     )
 }

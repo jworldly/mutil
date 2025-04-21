@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import org.koin.android.annotation.KoinViewModel
 
 /**
  * @Author: wlj
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.onStart
  * @Description:
  */
 
+@KoinViewModel
 class LoginVM(
     private val repo: LoginRepository,
 ) : BaseVM<LoginAction, LoginState, LoginEffect>() {

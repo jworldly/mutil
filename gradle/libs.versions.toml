@@ -14,7 +14,7 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.7.3"
 junit = "4.13.2"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 kotlinx-coroutines = "1.10.1"
 ktor = "3.1.2"
 koin-bom = "4.0.3"
@@ -22,6 +22,7 @@ logback = "1.5.6"
 uiAndroid = "1.7.8"
 junitJupiter = "5.8.1"
 napier = "2.7.1"
+coil = "3.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -34,7 +35,13 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+#
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha10" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
+# ktor网络 日志
 loginterceptor = { module = "io.nerdythings:okhttp-profiler", version = "1.1.1" }#日志
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }#日志
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }#日志
@@ -42,7 +49,7 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }#使用 OkHttp 作为引擎（通常用于 Android 项目）
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }#轻量的多平台异步 I/O 引擎
-#napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+#napier = { module = "io.github.aakira:napier", version.ref = "napier" } #多名平台日志库，感觉没必要
 #slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j-version" }  #找不到版本号
 ktor-serialization-json= { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }  #To serialize/deserialize JSON data
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }  #To serialize/deserialize JSON data
@@ -52,21 +59,26 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
 
-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
-kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-
-# https://insert-koin.io/docs/setup/koin#jetpack-compose-or-compose-multiplatform
+#koin注入 https://insert-koin.io/docs/setup/koin#jetpack-compose-or-compose-multiplatform
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core"}
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android"}
 koin-test = { module = "io.insert-koin:koin-test"}
+koin-annotations = { module = "io.insert-koin:koin-annotations",version ="2.0.1-Beta1" }
+koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler",version ="2.0.1-Beta1" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation" }
+
+#图片 https://coil-kt.github.io/coil/compose/
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.27.0" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.27.0" } # 线程安全的加减
+hotpreview = { module = "de.drick.compose:hotpreview", version = "0.1.6" } #预览
 
 
 [plugins]
@@ -77,3 +89,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+devtoolsKsp = { id = "com.google.devtools.ksp", version = "2.1.20-1.0.32" }
+#桌面热加载  https://github.com/JetBrains/compose-hot-reload
+hot-reload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha05" }

@@ -7,6 +7,7 @@ import com.wlj.shared.net.warpPostFlowBaseBean
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.JsonPrimitive
+import org.koin.core.annotation.Single
 
 /**
  * @Author: wlj
@@ -18,6 +19,7 @@ interface LoginRepository {
     fun postLogin(phone: String, code: String): Flow<Unit?>
 }
 
+@Single(binds = [LoginRepository::class])
 class LoginRepositoryImpl(private val client: HttpClient) : LoginRepository {
 
     override fun fetchVerifyCode(phone: String): Flow<BaseBeanImpl<Unit?>> {

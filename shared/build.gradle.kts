@@ -1,12 +1,16 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.hot.reload)
     kotlin("plugin.serialization") version "2.1.20"
+
 }
 
 kotlin {
@@ -56,14 +60,17 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(compose.material)
+                implementation(compose.material3)
                 implementation(compose.components.resources)
                 //koin
                 api(project.dependencies.platform(libs.koin.bom))
                 api(libs.koin.core)
                 api(libs.koin.compose)
                 api(libs.koin.compose.viewmodel)
-//              implementation(libs.koin.compose.viewmodel.navigation)
+//                api(libs.koin.compose.viewmodel.navigation)
+                // Koin Annotations
+                api(libs.koin.annotations)//annotations
+//                ksp(libs.koin.ksp.compiler)
 
                 api(libs.ktor.client.core)
                 api(libs.ktor.serialization.json)
@@ -93,6 +100,7 @@ kotlin {
         }
     }
 }
+
 
 android {
     namespace = "com.wlj.shared"

@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wlj.shared.ListItem
+import com.wlj.shared.tools
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -26,10 +25,11 @@ import org.jetbrains.compose.resources.stringResource
  */
 
 @Composable
-fun LoginList( modifier: Modifier,loginItems: List<ListItem>) {
+fun LoginList(modifier: Modifier, loginItems: List<ListItem>) {
     Column(
         modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
         loginItems.forEach {
             Item(it)
         }

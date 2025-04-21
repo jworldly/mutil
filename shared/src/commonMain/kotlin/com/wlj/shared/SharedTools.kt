@@ -1,6 +1,7 @@
 package com.wlj.shared
 
 import io.ktor.client.engine.HttpClientEngineConfig
+import org.koin.core.annotation.Single
 import org.koin.mp.KoinPlatform.getKoin
 
 /**
