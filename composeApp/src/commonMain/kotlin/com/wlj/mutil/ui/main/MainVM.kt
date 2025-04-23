@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.wlj.shared.viewmodel.Action
 import com.wlj.shared.viewmodel.BaseVM
+import com.wlj.shared.viewmodel.CommonState
 import com.wlj.shared.viewmodel.Effect
 import com.wlj.shared.viewmodel.State
 import kotlinx.coroutines.launch
@@ -25,7 +26,6 @@ class MainVM() : BaseVM<MainAction, MainState, MainEffect>() {
                     emitState(MainState.Tab(action.index))
                 }
             }
-
 
         }
     }

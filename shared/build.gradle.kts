@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -72,11 +71,17 @@ kotlin {
                 api(libs.koin.annotations)//annotations
 //                ksp(libs.koin.ksp.compiler)
 
+                //ktor
                 api(libs.ktor.client.core)
                 api(libs.ktor.serialization.json)
                 api(libs.ktor.client.content.negotiation)
                 api(libs.ktor.client.logging)
+
                 api(libs.atomicfu)
+
+
+                api(libs.settings.coroutines)
+//                api(libs.settings.serialization)//FlowSettings暂不支持
             }
         }
 
@@ -84,19 +89,31 @@ kotlin {
             dependencies {
                 api(project.dependencies.platform(libs.koin.bom))
                 api(libs.koin.android)
-
                 api(libs.ktor.client.okhttp)
+                //kv
+                api(libs.androidx.datastore.core)
+                api(libs.settings.datastore)
             }
         }
 
         iosMain {
             dependencies {
                 implementation(libs.ktor.client.darwin)
+                //kv
+                api(libs.settings.datastore)
+                api(libs.androidx.datastore.core)
             }
         }
 
         jvmMain.dependencies {
             api(libs.ktor.client.okhttp)
+            //kv
+            api(libs.settings.datastore)
+            api(libs.androidx.datastore.core)
+        }
+        wasmJsMain.dependencies {
+            api(libs.settings)
+            api(libs.settings.make.observable )
         }
     }
 }

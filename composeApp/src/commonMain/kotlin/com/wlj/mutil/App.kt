@@ -34,8 +34,10 @@ import com.wlj.shared.di.initKoin
 import com.wlj.shared.net.loading.GlobalLoadingDialog
 import com.wlj.shared.tools
 import mutil.composeapp.generated.resources.Res
+import mutil.composeapp.generated.resources.app_name
 import mutil.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.mp.KoinPlatform.getKoinOrNull
 
 
@@ -46,6 +48,7 @@ fun App(pop: () -> Unit) {
     Config.apply {
         debug = true
         headersBuilder.headers()
+        appName = stringResource(Res.string.app_name)
     }
 
     if (getKoinOrNull() == null) {

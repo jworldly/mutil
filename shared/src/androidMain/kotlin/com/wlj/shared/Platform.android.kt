@@ -10,9 +10,9 @@ import io.nerdythings.okhttp.profiler.OkHttpProfilerInterceptor
 import java.util.UUID
 import org.koin.java.KoinJavaComponent.inject
 
+val appContext: Context by inject(Context::class.java)
 class AndroidPlatform : Platform {
 
-    private val context: Context by inject(Context::class.java)
 
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
 
@@ -24,7 +24,7 @@ class AndroidPlatform : Platform {
     }
 
     override fun toast(str: String) {
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+        Toast.makeText(appContext, str, Toast.LENGTH_SHORT).show()
     }
 
     override fun configEngine(config: HttpClientEngineConfig) {

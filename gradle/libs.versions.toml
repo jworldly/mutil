@@ -23,6 +23,7 @@ uiAndroid = "1.7.8"
 junitJupiter = "5.8.1"
 napier = "2.7.1"
 coil = "3.1.0"
+settings = "1.3.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -75,6 +76,17 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
+#存储 https://github.com/russhwolf/multiplatform-settings
+settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "settings" }
+settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings" }
+settings-make-observable = { module = "com.russhwolf:multiplatform-settings-make-observable", version.ref = "settings" }
+settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "settings" }
+settings-serialization = { module = "com.russhwolf:multiplatform-settings-serialization", version.ref = "settings" }#FlowSettings暂不支持
+
+settings-datastore = { module = "com.russhwolf:multiplatform-settings-datastore", version.ref = "settings" }
+androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version = "1.1.4" }
+
+
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.27.0" } # 线程安全的加减
@@ -92,3 +104,6 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 devtoolsKsp = { id = "com.google.devtools.ksp", version = "2.1.20-1.0.32" }
 #桌面热加载  https://github.com/JetBrains/compose-hot-reload
 hot-reload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha05" }
+
+[bundles]
+#settings = ["settings", "settings-datastore", "settings-coroutines", "settings-serialization", "datastore-core"]

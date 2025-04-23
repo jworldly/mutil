@@ -16,7 +16,7 @@ import org.koin.core.annotation.Single
  */
 interface LoginRepository {
     fun fetchVerifyCode(phone: String): Flow<BaseBeanImpl<Unit?>>
-    fun postLogin(phone: String, code: String): Flow<Unit?>
+    fun postLogin(phone: String, code: String): Flow<LoginBean?>
 }
 
 @Single(binds = [LoginRepository::class])
@@ -25,12 +25,12 @@ class LoginRepositoryImpl(private val client: HttpClient) : LoginRepository {
     override fun fetchVerifyCode(phone: String): Flow<BaseBeanImpl<Unit?>> {
         return client.warpPostFlow(
             Urls.getVerifyCode,
-            "phone" to JsonPrimitive(phone)
+            "phone" to JsonPrimitive(phone),
         )
     }
 
-    override fun postLogin(phone: String, code: String): Flow<Unit?> {
-        return client.warpPostFlowBaseBean<Unit?, BaseBeanImpl<Unit?>>(
+    override fun postLogin(phone: String, code: String): Flow<LoginBean?> {
+        return client.warpPostFlowBaseBean<LoginBean?, BaseBeanImpl<LoginBean?>>(
             Urls.login,
             "phone" to JsonPrimitive(phone),
             "code" to JsonPrimitive(code),

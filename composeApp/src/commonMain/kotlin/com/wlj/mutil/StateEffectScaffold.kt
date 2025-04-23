@@ -26,7 +26,7 @@ fun <S : State, E : Effect, VM : BaseVM<*, S, E>> StateEffectScaffold(
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = EmptyCoroutineContext,
     sideEffect: (suspend (VM, E) -> Unit)? = null,
-    content: (@Composable (VM, S) -> Unit)
+    content: (@Composable (VM, S) -> Unit)?= null
 ) {
     // 通用效果处理
     LaunchedEffect(viewModel) {
@@ -60,6 +60,6 @@ fun <S : State, E : Effect, VM : BaseVM<*, S, E>> StateEffectScaffold(
         minActiveState = minActiveState,
         context = context
     )
-    (uiState.value ?: initialState)?.let { content(viewModel, it) }
+    (uiState.value ?: initialState)?.let { content?.invoke(viewModel, it) }
 
 }

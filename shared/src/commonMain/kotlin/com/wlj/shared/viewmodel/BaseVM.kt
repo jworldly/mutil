@@ -3,19 +3,15 @@ package com.wlj.shared.viewmodel
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wlj.shared.getPlatform
 import com.wlj.shared.net.loading.LoadingManager
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
@@ -37,6 +33,14 @@ interface Action
  * 使用State。为了兼容性我们选择StateFlow或者自定义SharedFlow。
  */
 interface State
+
+// 通用效果密封类（独立定义）
+sealed class CommonState : State {
+    data class Loading(val message: String? = null) : CommonState()
+    data class Empty(val message: String? = null, val retry: (() -> Unit)? = null) : CommonState()
+    data class Error(val message: String? = null, val retry: (() -> Unit)? = null) : CommonState()
+}
+
 
 /**
  * ui响应的事件
@@ -69,9 +73,9 @@ sealed class CommonEffect : Effect {
  */
 abstract class BaseVM<A : Action, S : State, E : Effect> : ViewModel(), KoinComponent {
 
-     val loading: LoadingManager by inject()
+    val loading: LoadingManager by inject()
 
-// <editor-fold desc="action">
+    // <editor-fold desc="action">
     private val _action = Channel<A>()
 
     init {
@@ -123,6 +127,7 @@ abstract class BaseVM<A : Action, S : State, E : Effect> : ViewModel(), KoinComp
     /** [replayState] 重放当前uiState,replay始终是1 */
     val replayState
         get() = _state.replayCache.firstOrNull()
+
 // </editor-fold desc="state">
 
 // <editor-fold desc="effect">
@@ -139,7 +144,7 @@ abstract class BaseVM<A : Action, S : State, E : Effect> : ViewModel(), KoinComp
     protected suspend fun emitEffect(effect: E) = _effect.emit(effect)
 // </editor-fold desc="effect">
 
-// <editor-fold desc=" common">
+    // <editor-fold desc=" common">
     // 新增通用效果通道（独立于业务效果）
     private val _commonEffect = MutableSharedFlow<CommonEffect>()
     val commonEffect: SharedFlow<CommonEffect> = _commonEffect.asSharedFlow()
@@ -150,6 +155,14 @@ abstract class BaseVM<A : Action, S : State, E : Effect> : ViewModel(), KoinComp
             _commonEffect.emit(CommonEffect.Toast(msg))
         }
     }
+
+    // 新增通用效果通道（独立于业务效果）
+    protected val _commonState = MutableSharedFlow<CommonState>()
+    val commonState: SharedFlow<CommonState> = _commonState.asSharedFlow()
+
+
+
+
 // </editor-fold desc=" common">
 
 // <editor-fold desc="test">

@@ -113,4 +113,5 @@ val netModule = module {
 
 val sharedModule = module {
     single { SharedTools() }
+//    single { Datas }
 }

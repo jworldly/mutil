@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.wlj.mutil.StateEffectScaffold
 import com.wlj.mutil.toPainterResource
 import com.wlj.mutil.ui.MainNavigationActions
+import com.wlj.mutil.ui.login.LoginEffect.NavigationToHost
 import com.wlj.shared.ListItem
 import com.wlj.shared.tools
 import de.drick.compose.hotpreview.HotPreview
@@ -58,34 +59,39 @@ fun LoginScreen(
 ) {
     val vm: LoginVM = koinViewModel()
 
-    StateEffectScaffold(vm) { viewModel, state ->
+    StateEffectScaffold(
+        vm,
+        LoginState.Loading,
+        sideEffect = { vm, effect ->
+            when (effect) {
+                is NavigationToHost -> {
+                    navigationActions.close()
+                }
+            }
+        }
+    ) { vm, state ->
 
+        Content(
+            modifier, pop, listOf(
+                ListItem(
+                    Res.drawable.ic_login_google, Res.string.label_login_google
+                ) {
+                    vm.sendAction(LoginAction.Google)
+                },
+
+                ListItem(
+                    Res.drawable.ic_login_google, Res.string.label_login_mail
+                ) {
+                    vm.sendAction(LoginAction.getVerifyCode)
+                },
+
+                ListItem(
+                    Res.drawable.ic_login_google, Res.string.label_login_facebook
+                ) {
+                    vm.sendAction(LoginAction.OnLoginClicked)
+                })
+        )
     }
-
-    val ss = stringResource(Res.string.label_login_google)
-    Content(
-        modifier, pop, listOf(
-            ListItem(
-                Res.drawable.ic_login_google, Res.string.label_login_google
-            ) {
-//                tools.toast(ss)
-                navigationActions.toMain()
-            },
-
-            ListItem(
-                Res.drawable.ic_login_google, Res.string.label_login_mail
-            ) {
-                tools.log("Res.string.label_login_mail 事实上 ，$ss")
-//                viewModel.loginGoogle { pop() }
-                vm.sendAction(LoginAction.getVerifyCode)
-            },
-
-            ListItem(
-                Res.drawable.ic_login_google, Res.string.label_login_facebook
-            ) {
-                vm.sendAction(LoginAction.OnLoginClicked)
-            })
-    )
 }
 
 @Composable

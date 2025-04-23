@@ -1,7 +1,8 @@
 package com.wlj.shared
 
+import com.russhwolf.settings.coroutines.FlowSettings
+import com.russhwolf.settings.coroutines.SuspendSettings
 import io.ktor.client.engine.HttpClientEngineConfig
-import org.koin.core.annotation.Single
 import org.koin.mp.KoinPlatform.getKoin
 
 /**
@@ -12,6 +13,7 @@ import org.koin.mp.KoinPlatform.getKoin
 class SharedTools {
 
     val platform: Platform = getPlatform()
+
     fun platformName(): String {
         return platform.name
     }
@@ -34,6 +36,14 @@ class SharedTools {
         platform.configEngine(config)
     }
 
+    val kv: FlowSettings = settings
+
+
+//    fun flowSettings2Settings(){
+//        kv.toBlockingSettings()
+//    }
+
 }
 
 val tools: SharedTools by lazy { getKoin().get() }
+val kv: FlowSettings by lazy { tools.kv }

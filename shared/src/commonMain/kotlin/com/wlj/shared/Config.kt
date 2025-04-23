@@ -40,5 +40,7 @@ object Config {
         headersBuilder.appendAll(headers)
     }
 
+    var appName = ""
+
 }
 
