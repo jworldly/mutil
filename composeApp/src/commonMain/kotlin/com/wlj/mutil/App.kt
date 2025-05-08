@@ -25,6 +25,10 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
+import com.wlj.mutil.common.EmptyContent
+import com.wlj.mutil.common.ErrorContent
+import com.wlj.mutil.common.LoadingContent
+import com.wlj.mutil.common.TimeOutContent
 import com.wlj.mutil.theme.Theme
 import com.wlj.mutil.di.AppModule
 import com.wlj.mutil.net.headers
@@ -32,7 +36,16 @@ import com.wlj.mutil.ui.MainNavGraph
 import com.wlj.shared.Config
 import com.wlj.shared.di.initKoin
 import com.wlj.shared.net.loading.GlobalLoadingDialog
+import com.wlj.shared.state.StateConfig
+import com.wlj.shared.state.StateConfig.emptyComposable
+import com.wlj.shared.state.StateConfig.errorComposable
+import com.wlj.shared.state.StateConfig.loadingComposable
+import com.wlj.shared.state.StateConfig.onLoading
 import com.wlj.shared.tools
+import com.wlj.shared.viewmodel.CommonState
+import com.wlj.shared.viewmodel.CommonState.Empty
+import com.wlj.shared.viewmodel.CommonState.Loading
+import com.wlj.shared.viewmodel.CommonState.TimeOut
 import mutil.composeapp.generated.resources.Res
 import mutil.composeapp.generated.resources.app_name
 import mutil.composeapp.generated.resources.compose_multiplatform
@@ -73,10 +86,34 @@ fun App(pop: () -> Unit) {
 
     // 加载loading
     GlobalLoadingDialog()
+    configPage()//多状态页面
 
     Theme {
         Surface {
             MainNavGraph()
+        }
+    }
+}
+
+/** 全局多状态页面配置 */
+fun configPage() {
+    StateConfig.apply {
+
+        loadingComposable = { LoadingContent(it as Loading) }
+
+        errorComposable = {
+            when (it) {
+                is TimeOut -> { TimeOutContent(it) }
+                is CommonState.Error -> { ErrorContent(it) }
+            }
+        }
+
+        emptyComposable = { EmptyContent(it as Empty) }
+    }
+
+    onLoading {
+        if(it is Loading){
+            it.msg = "onLoading"
         }
     }
 }

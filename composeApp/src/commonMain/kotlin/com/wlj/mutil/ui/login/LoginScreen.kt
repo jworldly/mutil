@@ -16,6 +16,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,13 +30,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wlj.mutil.StateEffectScaffold
 import com.wlj.mutil.toPainterResource
 import com.wlj.mutil.ui.MainNavigationActions
 import com.wlj.mutil.ui.login.LoginEffect.NavigationToHost
-import com.wlj.shared.ListItem
+import com.wlj.mutil.ui.login.LoginState
+import com.wlj.shared.ui.ListItem
 import com.wlj.shared.tools
+import com.wlj.shared.viewmodel.CommonState
 import de.drick.compose.hotpreview.HotPreview
+import kotlinx.coroutines.delay
 import mutil.composeapp.generated.resources.Res
 import mutil.composeapp.generated.resources.ic_login_google
 import mutil.composeapp.generated.resources.ic_login_top
@@ -57,11 +67,11 @@ fun LoginScreen(
     navigationActions: MainNavigationActions,
     pop: () -> Unit,
 ) {
-    val vm: LoginVM = koinViewModel()
+    val vm :LoginVM = koinViewModel()
 
     StateEffectScaffold(
         vm,
-        LoginState.Loading,
+        LoginState,
         sideEffect = { vm, effect ->
             when (effect) {
                 is NavigationToHost -> {
@@ -82,7 +92,7 @@ fun LoginScreen(
                 ListItem(
                     Res.drawable.ic_login_google, Res.string.label_login_mail
                 ) {
-                    vm.sendAction(LoginAction.getVerifyCode)
+                    vm.sendAction(LoginAction.VerifyCode)
                 },
 
                 ListItem(
@@ -91,6 +101,7 @@ fun LoginScreen(
                     vm.sendAction(LoginAction.OnLoginClicked)
                 })
         )
+
     }
 }
 

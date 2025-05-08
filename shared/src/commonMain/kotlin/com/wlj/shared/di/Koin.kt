@@ -3,22 +3,16 @@ package com.wlj.shared.di
 import com.wlj.shared.Config
 import com.wlj.shared.SharedTools
 import com.wlj.shared.net.loading.LoadingManager
+import com.wlj.shared.state.StatePageManager
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestRetry
-import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.headers
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
@@ -54,7 +48,7 @@ val netModule = module {
             //重试 https://ktor.io/docs/client-request-retry.html#conditions
             install(HttpRequestRetry) {
                 retryOnServerErrors(maxRetries = 3)//retrying a request if a 5xx response
-                exponentialDelay() //字数延迟
+                exponentialDelay() //指数延迟
             }
             //序列化与反序列化
             install(ContentNegotiation) {
@@ -113,5 +107,6 @@ val netModule = module {
 
 val sharedModule = module {
     single { SharedTools() }
+    factory { StatePageManager() }
 //    single { Datas }
 }

@@ -5,6 +5,7 @@ import com.wlj.shared.net.exception.RequestParamsException
 import com.wlj.shared.net.exception.ResponseException
 import com.wlj.shared.net.exception.ServerResponseException
 import com.wlj.shared.tools
+import io.ktor.client.plugins.ClientRequestException
 
 interface NetErrorHandler {
 
@@ -28,7 +29,7 @@ interface NetErrorHandler {
         }
 
         tools.toast(message.toString())
-        tools.log(e.toString())
+        tools.log("onError $e")
     }
 
     /**
@@ -38,11 +39,12 @@ interface NetErrorHandler {
      */
     fun onStateError(e: Throwable) {
         when (e) {
+            is ClientRequestException,
             is RequestParamsException,
             is ResponseException,
             is NullPointerException -> onError(e)
 
-            else ->  tools.log(e.toString())
+            else ->  tools.log("onStateError $e")
         }
     }
 }

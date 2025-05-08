@@ -27,7 +27,7 @@ fun StartScreen(modifier: Modifier, navActions: MainNavigationActions, click: ()
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Button(onClick = { navActions.toMain(1) }) {
+        Button(onClick = { navActions.toMain() }) {
             Text("start main", color = Color.White)
         }
 
@@ -37,5 +37,14 @@ fun StartScreen(modifier: Modifier, navActions: MainNavigationActions, click: ()
         ) {
             Text("start Login", color = Color.White)
         }
+
+        Button(
+            onClick = {  },
+            modifier = Modifier.padding(top = 20.dp)
+        ) {
+            Text("test", color = Color.White)
+        }
+
+
     }
 }

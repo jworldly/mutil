@@ -1,13 +1,13 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.wlj.mutil.ui.main.MainState
 import com.wlj.shared.tools
 import mutil.composeapp.generated.resources.Res
 import mutil.composeapp.generated.resources.home
@@ -18,13 +18,15 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MainBottomBar(
-    selectedTabIndex: Int,
+    tabIndex: Int,
+    modifier: Modifier = Modifier,
     onTabClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
 ) {
-    tools.log("MainBottomBar: selectedTabIndex = $selectedTabIndex")
+
+    tools.log("MainBottomBar: tabIndex = $tabIndex")
+
     // 使用 remember 保留 tabData，避免每次重组时重新创建
-    val tabData = remember {
+    val tabData = rememberSaveable {
         listOf(
             TabItem(
                 index = 0,
@@ -32,19 +34,19 @@ fun MainBottomBar(
             ),
             TabItem(
                 index = 1,
-                labelResId =  Res.string.me
+                labelResId = Res.string.me
             )
         )
     }
 
     TabRow(
-        selectedTabIndex = selectedTabIndex,
+        selectedTabIndex = tabIndex,
         indicator = {},
         modifier = modifier
     ) {
         tabData.forEach { tab ->
             Tab(
-                selected = selectedTabIndex == tab.index,
+                selected = tabIndex == tab.index,
                 onClick = {
                     try {
                         onTabClick(tab.index)
@@ -56,7 +58,7 @@ fun MainBottomBar(
                 },
                 icon = {
                     RenderTabIcon(
-                        selectedIndex = selectedTabIndex,
+                        selectedIndex = tabIndex,
                         tab = tab
                     )
                 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.wlj.shared.ListItem
+import com.wlj.shared.ui.ListItem
 import com.wlj.shared.tools
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

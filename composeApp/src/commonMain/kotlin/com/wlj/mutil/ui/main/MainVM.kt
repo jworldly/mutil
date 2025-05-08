@@ -1,13 +1,15 @@
 package com.wlj.mutil.ui.main
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.wlj.mutil.net.BaseBeanImpl
+import com.wlj.shared.net.warpResponseState
 import com.wlj.shared.viewmodel.Action
 import com.wlj.shared.viewmodel.BaseVM
 import com.wlj.shared.viewmodel.CommonState
 import com.wlj.shared.viewmodel.Effect
 import com.wlj.shared.viewmodel.State
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.android.annotation.KoinViewModel
 
 /**
@@ -16,33 +18,61 @@ import org.koin.android.annotation.KoinViewModel
  * @Description:
  */
 @KoinViewModel
-class MainVM() : BaseVM<MainAction, MainState, MainEffect>() {
-
+class MainVM(private val rep: MainRepository) : BaseVM<MainAction, MainState, MainEffect>() {
 
     override fun onAction(action: MainAction, currentState: MainState?) {
+        val mainState = currentState ?: MainState(0)
         when (action) {
             is MainAction.ChangeTab -> {
-                viewModelScope.launch {
-                    emitState(MainState.Tab(action.index))
-                }
+                emitState { mainState.copy(tabIndex = action.index) }
             }
 
+            MainAction.Refresh -> refresh(commonState.value)
         }
     }
 
+    /**
+     *
+     * 1、[Action]添加事件
+     * ```
+     * object Refresh : MainAction()
+     * ```
+     *
+     * 2、页面发送刷新请求：
+     * ```
+     *   val manage = StatePageManager().onRefresh { viewModel.sendAction(MainAction.Refresh) }
+     * ```
+     * 3、onAction接收调用[refresh]
+     * ```
+     * MainAction.Refresh -> refresh(commonState.value)
+     * ```
+     *
+     */
+    override fun refresh(state: CommonState, any: Any?) {
+        auditState(true)
+    }
+
+   private fun auditState(refresh: Boolean = false) {
+        rep.audit()
+            .warpResponseState<BaseBeanImpl<Unit?>>(this,refresh)
+//            .onEach { result -> }
+            .launchIn(viewModelScope)
+    }
 
 }
 
-sealed class MainEffect : Effect {
+//VM -> 页面 副作用
+sealed class MainEffect : Effect {}
 
-}
+//VM -> 页面 State
+data class MainState(
+    val tabIndex: Int = 0,
 
-sealed class MainState : State {
-    data class Tab(val index: Int) : MainState()
-}
+) : State
 
+//页面 -> VM
 sealed class MainAction : Action {
-
+    object Refresh : MainAction()
     data class ChangeTab(val index: Int) : MainAction()
 }
 

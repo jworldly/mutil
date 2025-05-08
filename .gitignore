@@ -11,3 +11,4 @@ local.properties
 /shared/build/
 /composeApp/build/
 /.kotlin/
+/.lingma/

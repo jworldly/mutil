@@ -1,4 +1,4 @@
-package com.wlj.shared
+package com.wlj.shared.ui
 
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -14,4 +14,3 @@ data class ListItem(
     val title: StringResource,
     val onClick: () -> Unit
 )
-

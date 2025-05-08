@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
@@ -16,7 +18,9 @@ plugins {
 }
 
 kotlin {
-
+//    androidLibrary {
+//        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+//    }
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "composeApp"
@@ -38,11 +42,11 @@ kotlin {
 
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
-    jvm("desktop")
+    jvm()
 
     listOf(
 //        iosX64(),
@@ -56,7 +60,7 @@ kotlin {
     }
 
     sourceSets {
-        val desktopMain by getting
+//        val desktopMain by getting
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -73,15 +77,13 @@ kotlin {
 
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-
 
             implementation(libs.hotpreview)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
         }
 
-        desktopMain.dependencies {
+        jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }
@@ -94,6 +96,11 @@ kotlin {
         arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
         arg("KOIN_DEFAULT_MODULE","true")
     }
+}
+
+ksp {
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
+    arg("KOIN_DEFAULT_MODULE","true")
 }
 
 // KSP Tasks
@@ -133,12 +140,16 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true
@@ -153,6 +164,15 @@ dependencies {
     testImplementation(libs.junit.jupiter)
 }
 
+// generateComposeResClass
+compose.resources {
+    publicResClass = false //为true会使生成的Res类为 public 。默认情况下，生成的类为internal
+//    packageOfResClass = "me.wlj.commom.resources"
+    generateResClass = auto
+}
+
+
+
 //desktopRun -DmainClass=com.wlj.mutil.MainKt --quiet
 compose.desktop {
     application {
@@ -165,12 +185,7 @@ compose.desktop {
         }
     }
 }
-compose.resources {
-    publicResClass = false //
-//    packageOfResClass = "me.wlj.commom.resources"
-    generateResClass = auto
-}
-
+//jvmRunHot -PmainClass=com.wlj.mutil.MainKt
 tasks.withType<ComposeHotRun>().configureEach {
     mainClass.set("com.wlj.mutil.MainKt")
 }

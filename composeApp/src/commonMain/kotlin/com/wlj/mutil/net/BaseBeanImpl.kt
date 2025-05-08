@@ -10,10 +10,10 @@ data class BaseBeanImpl<T>(
     @Serializable
     val `data`: T,
 ) : BaseBean<T> {
-    override fun getDataInfo() = data
+    override fun dataInfo() = data
 
-    override fun getDataCode() = code
+    override fun dataCode() = code
 
-    override fun getDataMsg() = message
+    override fun dataMsg() = message
 
 }

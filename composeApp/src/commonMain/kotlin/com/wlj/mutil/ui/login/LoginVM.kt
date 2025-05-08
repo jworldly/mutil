@@ -1,21 +1,19 @@
 package com.wlj.mutil.ui.login
 
 import androidx.lifecycle.viewModelScope
+import com.wlj.mutil.net.BaseBeanImpl
 import com.wlj.shared.kv
 import com.wlj.shared.net.warpResponse
 import com.wlj.shared.tools
-import com.wlj.shared.utils.decodeValueFlow
-import com.wlj.shared.utils.encodeValue
-import com.wlj.shared.utils.handleFlowErrors
-import com.wlj.shared.utils.showLoadingDialog
+import com.wlj.shared.utils.decodeBean
+import com.wlj.shared.utils.decodeBeanFlow
+import com.wlj.shared.utils.encodeBean
 import com.wlj.shared.viewmodel.Action
 import com.wlj.shared.viewmodel.BaseVM
-import com.wlj.shared.viewmodel.CommonState
 import com.wlj.shared.viewmodel.Effect
 import com.wlj.shared.viewmodel.State
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -32,7 +30,7 @@ class LoginVM(
 
     init {
         viewModelScope.launch {
-            kv.decodeValueFlow("loginbean", LoginBean()).collect {
+            kv.decodeBeanFlow("loginbean", LoginBean()).collect {
                 tools.log("loginbean decodeValueFlow:${it}")
             }
         }
@@ -40,30 +38,29 @@ class LoginVM(
 
     override fun onAction(action: LoginAction, currentState: LoginState?) {
         when (action) {
-            LoginAction.Google -> /*tools.toast("google login")*/ showToast("google")
+            LoginAction.Google -> tools.toast("google login")
             LoginAction.OnLoginClicked -> login()
-            LoginAction.getVerifyCode -> getVerifyCode()
-            else -> {}
+            LoginAction.VerifyCode -> getVerifyCode()
         }
     }
 
     private fun getVerifyCode() {
-
         repo.fetchVerifyCode("17602345326")
-            .warpResponse(loading)
+            .warpResponse<BaseBeanImpl<Unit?>>(loading)
             .onEach { result ->
                 val s = kv.getString("token", "")
                 tools.log("token:$s")
+                tools.log("loginbean:${kv.decodeBean("loginbean", LoginBean())}")
             }.launchIn(viewModelScope)
     }
 
     private fun login() {
         repo.postLogin("17602345326", "666666")
-            .warpResponse(loading)
+            .warpResponse<BaseBeanImpl<LoginBean>>(loading)
             .onEach { result ->
-                result?.auth?.let {
-                    kv.putString("token", it)
-                    kv.encodeValue("loginbean", result)
+                result.dataInfo().let {
+                    kv.putString("token", it.auth ?: "")
+                    kv.encodeBean("loginbean", it)
                 }
                 emitEffect(LoginEffect.NavigationToHost())
             }.launchIn(viewModelScope)
@@ -76,13 +73,10 @@ sealed class LoginEffect : Effect {
 
 }
 
-sealed class LoginState : State {
-    data object Loading : LoginState()
-    data class Error(val ex: Throwable) : LoginState()
-}
+object LoginState : State
 
 sealed class LoginAction : Action {
     object Google : LoginAction()
     object OnLoginClicked : LoginAction()
-    object getVerifyCode : LoginAction()
+    object VerifyCode : LoginAction()
 }

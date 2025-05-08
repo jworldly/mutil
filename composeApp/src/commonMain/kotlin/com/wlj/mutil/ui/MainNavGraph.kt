@@ -32,6 +32,7 @@ import com.wlj.mutil.ui.MainArgs.MAIN_TAB_ARG
 import com.wlj.mutil.ui.login.LoginScreen
 import com.wlj.mutil.ui.main.MainScreen
 import com.wlj.mutil.ui.start.StartScreen
+import com.wlj.shared.tools
 
 @Composable
 fun MainNavGraph(
@@ -63,7 +64,6 @@ fun MainNavGraph(
             MainDestinations.MAIN_ROUTE, arguments = listOf(
                 navArgument(MAIN_TAB_ARG) { type = NavType.IntType; defaultValue = 0 }
             )) { entry ->
-
             MainScreen(
                 entry.arguments?.getInt(MAIN_TAB_ARG)!!,
                 navActions

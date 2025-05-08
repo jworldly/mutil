@@ -38,8 +38,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 #
 androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha10" }
-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+#androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
 # ktor网络 日志
@@ -103,7 +103,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 devtoolsKsp = { id = "com.google.devtools.ksp", version = "2.1.20-1.0.32" }
 #桌面热加载  https://github.com/JetBrains/compose-hot-reload
-hot-reload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha05" }
+hot-reload = { id = "org.jetbrains.compose.hot-reload", version = "1.0.0-alpha08" }
 
 [bundles]
 #settings = ["settings", "settings-datastore", "settings-coroutines", "settings-serialization", "datastore-core"]

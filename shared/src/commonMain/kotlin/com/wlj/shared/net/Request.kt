@@ -1,8 +1,6 @@
 package com.wlj.shared.net
 
-import com.wlj.shared.Config
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -18,32 +16,17 @@ import kotlinx.serialization.json.JsonElement
  *  [更多请求方式](https://ktor.io/docs/client-requests.html#form_parameters)
  *
  *  T 解析，返回T
+ *
+ *
  */
-inline fun <reified T> HttpClient.warpPostFlow(
+fun HttpClient.warpPostFlow(
     path: String,
     vararg pair: Pair<String, JsonElement>,
-//    crossinline errorHandel: (Throwable) -> Boolean = { true } //返回true就继续执行
-): Flow<T> {
-    return flow<T> {
+): Flow<HttpResponse> {
+    return flow<HttpResponse> {
         val response = warpPost(path, *pair)
-        emit(response.body())
-    }//.handleFlowErrors(errorHandel)
-}
-
-/**
- * 用BaseBean<T> 解析，返回T
- */
-inline fun <reified T, reified baseBean : BaseBean<T>> HttpClient.warpPostFlowBaseBean(
-    path: String,
-    vararg pair: Pair<String, JsonElement>,
-//    crossinline errorHandel: (Throwable) -> Boolean = { true } //返回true就继续执行
-): Flow<T> {
-    return flow {
-        val response = warpPost(path, *pair)
-
-        val body: baseBean = response.body()
-        emit(Config.netConverter.onConvert(body, response))
-    }//.handleFlowErrors(errorHandel)
+        emit(response)
+    }
 }
 
 suspend fun HttpClient.warpPost(

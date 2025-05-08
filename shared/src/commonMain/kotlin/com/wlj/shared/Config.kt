@@ -1,5 +1,6 @@
 package com.wlj.shared
 
+import com.wlj.shared.net.JsonConvert
 import com.wlj.shared.net.NetConverter
 import com.wlj.shared.net.NetErrorHandler
 import io.ktor.http.HeadersBuilder
@@ -27,7 +28,7 @@ object Config {
     /** 错误处理器 */
     var errorHandler: NetErrorHandler = NetErrorHandler
     /// 网络请求转换器
-    var netConverter: NetConverter = NetConverter
+    var netConverter: NetConverter = JsonConvert()
 
     /**
      * 请求头组装

@@ -65,7 +65,10 @@ class MainNavigationActions(val navController: NavHostController) {
     }
 
     fun toLogin() {
-        navController.navigate(MainDestinations.LOGIN_ROUTE)
+        navController.navigate(MainDestinations.LOGIN_ROUTE) {
+            launchSingleTop = true
+            restoreState = true // 启用UI状态恢复
+        }
     }
 
     fun toStart(ivs: Boolean = true) {
@@ -85,22 +88,36 @@ class MainNavigationActions(val navController: NavHostController) {
         ) {
             //在导航之前弹出到给定的目的地。这会从返回堆栈中弹出所有不匹配的目标，直到找到此目标。
             popUpTo(navController.graph.findStartDestination().route ?: MAIN_ROUTE) {
-                inclusive = true // 如果为true，则从返回堆栈中弹出所有不匹配的目标，直到找到此目标。
-                saveState = false //
+                inclusive = false // 如果为true，则从返回堆栈中弹出所有不匹配的目标，直到找到此目标。
+                saveState = true //
             }
             launchSingleTop = true
-            restoreState =
-                true //是否应恢复以前由 [saveState] 或 'popUpToSaveState' 属性保存的任何状态。如果之前没有保存任何状态并导航到目标 ID，则此作无效。
+            //是否应恢复以前由 [saveState] 或 'popUpToSaveState' 属性保存的任何状态。如果之前没有保存任何状态并导航到目标 ID，则此作无效。
+            restoreState = true
         }
         navController.graph.setStartDestination(MAIN_ROUTE)
     }
 
     fun navigate(router: String) {
-        navController.navigate(router)
+        navController.navigate(router) {
+            launchSingleTop = true
+            restoreState = true // 启用状态恢复
+        }
     }
 
     fun close() {
         navController.popBackStack()
+    }
+
+    /**
+     * 回退到指定路由
+     */
+    fun backTo(route: String) {
+        navController.popBackStack(
+            route,
+            inclusive = false, //是否还应弹出给定的目标
+            saveState =  false //保存返回堆栈以及当前目的地和路由之间所有目的地的状态以供以后恢复
+        )
     }
 
     //拦截器
